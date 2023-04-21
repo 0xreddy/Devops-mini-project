@@ -3,24 +3,16 @@ language: shell
 services:
   - docker
 
+
 before_script:
-  - wget -qO- https://toolbelt.heroku.com/install.sh | sh
+  - docker build -t your-docker-image-name .
 
 script:
-  - docker build .
+  - docker run your-docker-image-name python test.py
 
-after_success:
-  - heroku login
-  - heroku container:login
-  - heroku container:push web --app <your-app-name>
-  - heroku container:release web --app <your-app-name>
-  
 deploy:
-  on: 
-    branch: main
   provider: heroku
-  api_key: bd5d5e6b-45a3-4a48-997a-dd870f3fb12a
-  app: devops-mini-project
-  strategy: git
+  api_key: $HEROKU_API_KEY
+  app: your-heroku-app-name
   on:
-    branch: master
+    branch: main
