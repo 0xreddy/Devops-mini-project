@@ -3,5 +3,22 @@ language: shell
 services:
   - docker
 
+before_script:
+  - wget -qO- https://toolbelt.heroku.com/install.sh | sh
+
 script:
   - docker build .
+
+after_success:
+  - heroku login
+  - heroku container:login
+  - heroku container:push web --app devops-mini-project
+  - heroku container:release web --app devops-mini-project
+  
+deploy:
+  on:
+    branch: main
+  provider: heroku
+  app: devops-mini-project
+  api_key:
+    secure: bd5d5e6b-45a3-4a48-997a-dd870f3fb12a
