@@ -11,3 +11,10 @@ script:
   - sleep 3 # wait for nginx to start
   - response=$(curl --write-out %{http_code} --silent --output /dev/null localhost:6756)
   - if [ $response != "200" ]; then exit 1; fi
+deploy:
+  provider: heroku
+  api_key:
+    secure: bd5d5e6b-45a3-4a48-997a-dd870f3fb12a
+  app: devops-mini-project
+  on:
+    branch: master
