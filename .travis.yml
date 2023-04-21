@@ -5,10 +5,10 @@ services:
 
 
 before_script:
-  - docker build -t your-docker-image-name .
+  - docker build -t  .
 
 script:
-  - docker run your-docker-image-name python test.py
+  - docker run 
 
 deploy:
   provider: heroku
