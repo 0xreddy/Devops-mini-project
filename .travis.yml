@@ -3,22 +3,30 @@ language: shell
 services:
   - docker
 
-before_script:
-  - wget -qO- https://toolbelt.heroku.com/install.sh | sh
+before_install:
+  # Install the Heroku CLI
+  - wget https://cli-assets.heroku.com/heroku-linux-x64.tar.gz
+  - mkdir -p /usr/local/lib /usr/local/bin
+  - tar -xvzf heroku-linux-x64.tar.gz -C /usr/local/lib
+  - ln -s /usr/local/lib/heroku/bin/heroku /usr/local/bin/heroku
+
 
 script:
   - docker build .
 
 after_success:
-  - heroku login
-  - heroku container:login
-  - heroku container:push web --app devops-mini-project
+  # Log in to Heroku container registry
+  - echo "bd5d5e6b-45a3-4a48-997a-dd870f3fb12a" | docker login --username=_ --password-stdin registry.heroku.com
+  # Build Docker image and push to Heroku
+  - docker build -t registry.heroku.com/devops-mini-project/web .
+  - docker push registry.heroku.com/devops-mini-project/web
+  # Release the pushed image on Heroku
   - heroku container:release web --app devops-mini-project
   
 deploy:
-  on:
-    branch: main
   provider: heroku
+  api_key: bd5d5e6b-45a3-4a48-997a-dd870f3fb12a
   app: devops-mini-project
-  api_key:
-    secure: bd5d5e6b-45a3-4a48-997a-dd870f3fb12a
+  strategy: git
+  on:
+    branch: master
