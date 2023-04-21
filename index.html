@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TGPA Calculator</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>TGPA Calculator</h1>
+    <form>
+      <label for="num-subjects">Number of Subjects:</label>
+      <input type="number" id="num-subjects">
+
+      <div id="subject-details"></div>
+
+      <label for="last-term-cgpa">Last Term CGPA:</label>
+      <input type="number" step="0.01" id="last-term-cgpa">
+
+      <button type="button" onclick="calculateGPA()">Calculate GPA</button>
+
+      <div id="result"></div>
+    </form>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+</html>
