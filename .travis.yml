@@ -13,7 +13,7 @@ script:
   - if [ $response != "200" ]; then exit 1; fi
 deploy:
   provider: heroku
-  api_key: $heroku-key
-  app: devops-mini-project
+  api_key: ${heroku-key}
+  app: devops-pro
   on:
     branch: deploy-test
