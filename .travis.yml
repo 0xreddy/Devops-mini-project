@@ -6,13 +6,13 @@ services:
 deploy:
   - provider: elasticbeanstalk
     region: ap-south-1
-    app: "my-first-app"
-    env: "Myfirstapp-env"
+    app: "devops-mini-project"
+    env: "Devopsminiproject-env"
 
     access_key_id: $AWS_ACCESS_KEY
     secret_access_key: $AWS_SERECT_KEY
 
-    bucket_name: "my-first-app-bucket"
+    bucket_name: "devops-mini-project"
 
     bucket_path: "docker"
 
@@ -21,13 +21,13 @@ deploy:
 
   - provider: elasticbeanstalk
     region: ap-south-1
-    app: "test-app"
-    env: "Testapp-env"
+    app: "devops-mini-project"
+    env: "Devopsminiproject-env"
 
     access_key_id: $AWS_ACCESS_KEY
     secret_access_key: $AWS_SERECT_KEY
 
-    bucket_name: "my-first-app-bucket"
+    bucket_name: "devops-mini-project"
   
     bucket_path: "docker"
 
