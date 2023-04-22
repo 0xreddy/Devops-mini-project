@@ -15,7 +15,7 @@ script:
   
 deploy:
   provider: heroku
-  api_key: $"heroku-key"  
+  api_key: "$HEROKU_KEY"  
   app: devops-pro
   on:
     branch: deploy-test
