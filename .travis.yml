@@ -7,23 +7,28 @@ services:
 before_install:
   - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
   - docker build -t my-web-app .
-  - curl https://cli-assets.heroku.com/install.sh | sh
-  - docker login --username=Oxreddy@gmail.com --password=$HEROKU_KEY registry.heroku.com
   
 script:
   - docker build -t my-web-app .
-  - docker tag my-web-app registry.heroku.com/$HEROKU_APP/web 
-#  - sleep 4 # wait for nginx to start
-#  - response=$(curl --write-out %{http_code} --silent --output /dev/null localhost:6756)
-#  - if [ $response != "200" ]; then exit 1; fi
+#  - docker tag my-web-app registry.heroku.com/$HEROKU_APP/web 
+  - sleep 4 # wait for nginx to start
+  - response=$(curl --write-out %{http_code} --silent --output /dev/null localhost:6756)
+  - if [ $response != "200" ]; then exit 1; fi
   
 deploy:
-  provider: script
-  script: 
-    docker push my-web-app;
-    docker push registry.heroku.com/$HEROKU_APP/web;
-    heroku container:release web --app $HEROKU_APP
-  api_key: "$HEROKU_KEY"  
-  app: devops-pro
+  provider: elasticbeanstalk
+  region: ap-south-1
+  app: devops-mini-project
+  env: Devopsminiproject-env
+
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SERECT_KEY
+
+  bucket_name: "devops-mini-project"
+
+  bucket_path: "docker"
+
   on:
-    branch: deploy-test
+    branch: test01
+
+ 
