@@ -9,7 +9,7 @@ before_install:
   
 script:
   - docker run -d -p 6756:80 my-web-app
-  - sleep 3 # wait for nginx to start
+  - sleep 4 # wait for nginx to start
   - response=$(curl --write-out %{http_code} --silent --output /dev/null localhost:6756)
   - if [ $response != "200" ]; then exit 1; fi
   
