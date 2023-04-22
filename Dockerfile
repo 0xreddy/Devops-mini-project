@@ -1,7 +1,4 @@
-From nginx
-
-WORKDIR '/app'
-
-EXPOSE 80
-
-COPY ./html/ /usr/share/nginx/html/
+FROM nginx:latest
+COPY . /usr/share/nginx/html
+EXPOSE 6756
+CMD ["nginx", "-g", "daemon off;"]
