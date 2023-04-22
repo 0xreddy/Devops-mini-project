@@ -1,4 +1,5 @@
 language: bash
+sudo: required
 
 services:
   - docker
@@ -6,15 +7,22 @@ services:
 before_install:
   - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
   - docker build -t my-web-app .
+  - curl https://cli-assets.heroku.com/install.sh | sh
+  - docker login --username=Oxreddy@gmail.com --password=$HEROKU_KEY registry.heroku.com
   
 script:
-  - docker run -d -p 6756:80 my-web-app
+  - docker build -t my-web-app .
+  - docker tag my-web-app registry.heroku.com/$HEROKU_APP/web 
   - sleep 4 # wait for nginx to start
   - response=$(curl --write-out %{http_code} --silent --output /dev/null localhost:6756)
   - if [ $response != "200" ]; then exit 1; fi
   
 deploy:
   provider: heroku
+  script: 
+               docker push my-web-app;
+               docker push registry.heroku.com/$HEROKU_APP/web;
+               heroku container:release web --app $HEROKU_APP
   api_key: "$HEROKU_KEY"  
   app: devops-pro
   on:
