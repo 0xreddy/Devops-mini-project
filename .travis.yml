@@ -20,10 +20,10 @@ script:
 deploy:
   provider: script
   script: 
-    heroku container:login
+    docker push my-web-app;
     docker push registry.heroku.com/$HEROKU_APP/web;
-    heroku container:release web -a $HEROKU_APP
-  api_key: "$HEROKU_KEY"  
-  app: devops-pro
+    heroku container:release web --app $HEROKU_APP
+#  api_key: "$HEROKU_KEY"  
+#  app: devops-pro
   on:
     branch: deploy-test
