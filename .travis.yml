@@ -10,7 +10,7 @@ deploy:
     env: "Myfirstapp-env"
 
     access_key_id: $AWS_ACCESS_KEY
-    secret_access_key: $AWS_SERET_KEY
+    secret_access_key: $AWS_SERECT_KEY
 
     bucket_name: "my-first-app-bucket"
 
@@ -25,7 +25,7 @@ deploy:
     env: "Testapp-env"
 
     access_key_id: $AWS_ACCESS_KEY
-    secret_access_key: $AWS_SERET_KEY
+    secret_access_key: $AWS_SERECT_KEY
 
     bucket_name: "my-first-app-bucket"
   
