@@ -18,11 +18,11 @@ script:
 #  - if [ $response != "200" ]; then exit 1; fi
   
 deploy:
-  provider: heroku
+  provider: script
   script: 
-               docker push my-web-app;
-               docker push registry.heroku.com/$HEROKU_APP/web;
-               heroku container:release web --app $HEROKU_APP
+    heroku container:login
+    docker push registry.heroku.com/$HEROKU_APP/web;
+    heroku container:release web -a $HEROKU_APP
   api_key: "$HEROKU_KEY"  
   app: devops-pro
   on:
