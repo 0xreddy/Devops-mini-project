@@ -4,9 +4,9 @@ sudo: required
 services:
   - docker
 
-before_install:
-  - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
-  - docker build -t my-web-app .
+#before_install:
+#  - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
+#  - docker build -t my-web-app .
   
 script:
   - docker build -t my-web-app .
