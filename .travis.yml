@@ -18,18 +18,4 @@ deploy:
 
     on:
       branch: test01
-
-  - provider: elasticbeanstalk
-    region: ap-south-1
-    app: "devops-mini-project"
-    env: "Devopsminiproject-env"
-
-    access_key_id: $AWS_ACCESS_KEY
-    secret_access_key: $AWS_SERECT_KEY
-
-    bucket_name: "devops-mini-project"
-  
-    bucket_path: "docker"
-
-    on:
-      branch: testing 
+ 
