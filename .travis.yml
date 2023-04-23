@@ -15,17 +15,9 @@ script:
   - sleep 5 # wait for nginx to start
   - response=$(curl --write-out %{http_code} --silent --output /dev/null localhost:8080)
   - if [ $response != "200" ]; then exit 1; fi
-  - echo  "test passed" 
-
-after_success:
-  # Log in to Docker Hub using access token
-  - echo "$DOCKER_ACCESS_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
-
-  # Push the Docker image to Docker Hub
-  - docker push reddy0718/devops-project:v1
-  
-  # SSH into the VM and pull the Docker image
-  - sshpass -p "$vm_pass" ssh "root@$vm_ip" "docker login && docker pull reddy0718/devops-project:v1"
-
-  # Spin up the Docker container
-  - sshpass -p "$vm_pass" ssh "root@$vm_ip" "docker stop my-web-app && docker rm my-web-app && docker run -d -p 6060:6060 --name my-web-app reddy0718/devops-project:v1 && docker rmi $(docker images -qf dangling=true) || true"
+deploy:
+  provider: heroku
+  api_key: ${heroku-key}
+  app: devops-pro
+  on:
+    branch: deploy-test
