@@ -28,4 +28,4 @@ after_success:
   - sshpass -p "$vm_pass" ssh "root@$vm_ip" "docker login && docker pull reddy0718/devops-project:v1"
 
   # Spin up the Docker container
-  - sshpass -p "$vm_pass" ssh "root@$vm_ip" "docker stop my-web-app && docker rm my-web-app && docker run -d -p 80:80 --name my-web-app reddy0718/devops-project:v1 && docker rmi $(docker images -qf dangling=true) || true"
+  - sshpass -p "$vm_pass" ssh "root@$vm_ip" "docker stop my-web-app && docker rm my-web-app && docker run -d -p 6060:6060 --name my-web-app reddy0718/devops-project:v1 && docker rmi $(docker images -qf dangling=true) || true"
