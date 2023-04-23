@@ -17,8 +17,8 @@ script:
   - if [ $response != "200" ]; then exit 1; fi
 
 after_success:
-  # Log in to Docker Hub
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  # Log in to Docker Hub using access token
+  - echo "$DOCKER_ACCESS_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
   # Push the Docker image to Docker Hub
   - docker push my-image
