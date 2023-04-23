@@ -4,10 +4,20 @@ services:
   - docker
 
 before_install:
-  - docker build -t my-web-app .
+  - sudo apt-get install sshpass
 
 script:
-  - docker run -d -p 6756:80 my-web-app
-  - sleep 3 # wait for nginx to start
-  - response=$(curl --write-out %{http_code} --silent --output /dev/null localhost:6756)
+  # Build and tag the Docker image
+  - docker build -t reddy0718/devops-project:v1 .
+
+  # Test the Docker image
+  - docker run -d -p 8080:80 reddy0718/devops-project:v1
+  - sleep 5 # wait for nginx to start
+  - response=$(curl --write-out %{http_code} --silent --output /dev/null localhost:8080)
   - if [ $response != "200" ]; then exit 1; fi
+deploy:
+  provider: heroku
+  api_key: ${heroku-key}
+  app: devops-pro
+  on:
+    branch: deploy-test
