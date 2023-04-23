@@ -4,6 +4,7 @@ services:
   - docker
 
 before_install:
+  - sudo apt-get install sshpass
   - docker build -t my-web-app .
 
 script:
@@ -12,18 +13,8 @@ script:
   - response=$(curl --write-out %{http_code} --silent --output /dev/null localhost:6756)
   - if [ $response != "200" ]; then exit 1; fi
 
-deploy:
-  - provider: elasticbeanstalk
-    region: ap-south-1
-    app: "devops-mini-project"
-    env: "Devopsminiproject-env"
-
-    access_key_id: $AWS_ACCESS_KEY
-    secret_access_key: $AWS_SERECT_KEY
-
-    bucket_name: "devops-mini-project"
-
-    bucket_path: "docker"
-
-    on:
-      branch: test01
+after_success:
+  - echo "Deployment started"
+  - sshpass -p '$vm_pass' scp -o StrictHostKeyChecking=no my-web-app root@142.93.217.53:/tmp/my-web-app
+  - sshpass -p '$vm_pass' ssh root@142.93.217.53 "docker stop my-web-app && docker rm my-web-app && docker load < /tmp/my-web-app && docker run -d -p 80:80 --name my-web-app my-web-app"
+  - echo "Deployment finished successfully"
