@@ -21,7 +21,7 @@ after_success:
   - echo "$DOCKER_ACCESS_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
   # Push the Docker image to Docker Hub
-  - docker push my-image
+  - docker push my-image/devops-project
 
   # SSH into the VM and pull the Docker image
   - sshpass -p "$vm_pass" scp -o StrictHostKeyChecking=no ~/.ssh/id_rsa.pub "root"@"$vm_ip":/tmp/id_rsa.pub
