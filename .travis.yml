@@ -25,7 +25,7 @@ after_success:
   # SSH into the VM and pull the Docker image
   - sshpass -p "$vm_pass" scp -o StrictHostKeyChecking=no ~/.ssh/id_rsa.pub "root"@"$vm_ip":/tmp/id_rsa.pub
   - sshpass -p "$vm_pass" ssh "root"@"$vm_ip" "mkdir -p ~/.ssh && cat /tmp/id_rsa.pub >> ~/.ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys"
-  - sshpass -p "$vm_pass" ssh "root"@"$vm_ip" "docker pull reddy0718/devops-project"
+  - sshpass -p "$vm_pass" ssh "root"@"$vm_ip" "docker pull reddy0718/devops-project:v1"
 
   # Spin up the Docker container
-  - sshpass -p "$vm_pass" ssh "root"@"$vm_ip" "docker stop my-web-app && docker rm my-web-app && docker run -d -p 80:80 --name my-web-app my-image && docker rmi $(docker images -qf dangling=true) || true"
+  - sshpass -p "$vm_pass" ssh "root"@"$vm_ip" "docker stop my-web-app && docker rm my-web-app && docker run -d -p 80:80 --name my-web-app reddy0718/devops-project && docker rmi $(docker images -qf dangling=true) || true"
