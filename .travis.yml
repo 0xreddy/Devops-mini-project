@@ -15,6 +15,7 @@ script:
   - sleep 5 # wait for nginx to start
   - response=$(curl --write-out %{http_code} --silent --output /dev/null localhost:8080)
   - if [ $response != "200" ]; then exit 1; fi
+  - echo  "test passed" 
 
 after_success:
   # Log in to Docker Hub using access token
