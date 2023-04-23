@@ -8,10 +8,10 @@ before_install:
 
 script:
   # Build and tag the Docker image
-  - docker build -t my-image .
+  - docker build -t reddy0718/devops-project .
 
   # Test the Docker image
-  - docker run -d -p 8080:80 my-image
+  - docker run -d -p 8080:80 reddy0718/devops-project
   - sleep 5 # wait for nginx to start
   - response=$(curl --write-out %{http_code} --silent --output /dev/null localhost:8080)
   - if [ $response != "200" ]; then exit 1; fi
@@ -21,11 +21,11 @@ after_success:
   - echo "$DOCKER_ACCESS_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
   # Push the Docker image to Docker Hub
-  - docker push my-image
+  - docker push reddy0718/devops-project
   # SSH into the VM and pull the Docker image
   - sshpass -p "$vm_pass" scp -o StrictHostKeyChecking=no ~/.ssh/id_rsa.pub "root"@"$vm_ip":/tmp/id_rsa.pub
   - sshpass -p "$vm_pass" ssh "root"@"$vm_ip" "mkdir -p ~/.ssh && cat /tmp/id_rsa.pub >> ~/.ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys"
-  - sshpass -p "$vm_pass" ssh "root"@"$vm_ip" "docker pull my-image"
+  - sshpass -p "$vm_pass" ssh "root"@"$vm_ip" "docker pull reddy0718/devops-project"
 
   # Spin up the Docker container
   - sshpass -p "$vm_pass" ssh "root"@"$vm_ip" "docker stop my-web-app && docker rm my-web-app && docker run -d -p 80:80 --name my-web-app my-image && docker rmi $(docker images -qf dangling=true) || true"
