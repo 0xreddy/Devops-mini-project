@@ -17,12 +17,11 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v2
 
-            - name: Adding Known Hosts
-              run: |
-                echo "$PRIVATE_KEY" > ssh_key
-                echo "$PRIVATE_KEY"
-                echo "$USERNAME@$HOSTNAME"
-                chmod 600 ssh_key
-
-            - name: Copy code to server
-              run: ssh -o StrictHostKeyChecking=no -i ssh_key $USERNAME@$HOSTNAME "docker -v"
+            - uses: appleboy/ssh-action@master
+              with:
+                host: ${{ secrets.SERVER_IP }}
+                username: ${{ secrets.SERVER_USERNAME }}
+                key: ${{ secrets.SSH_PRIVATE_KEY }}
+                port: "22"
+                script: |
+                  echo "Hello, world!"
