@@ -26,7 +26,7 @@ after_success:
 
   - echo "$ssh_key" > ssh_key.key
   - chmod 400 ssh_key.key
-  - ssh -i ssh_key.key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@$vm_ip "docker login && docker pull reddy0718/devops-project:v1" 
+  - ssh -i ssh_key.key -o StrictHostKeyChecking=no root@$vm_ip "docker login && docker pull reddy0718/devops-project:v1" 
   # SSH into the VM and pull the Docker image
   # - sshpass -p "$vm_pass" ssh "root@$vm_ip" "docker login && docker pull reddy0718/devops-project:v1"
 
