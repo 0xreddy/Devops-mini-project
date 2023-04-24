@@ -5,6 +5,11 @@ on:
         branches:
             - main
 
+env:
+    PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+    HOSTNAME: ${{ secrets.SERVER_IP }}
+    USERNAME: ${{ secrets.SERVER_USERNAME }}
+
 jobs:
     deploy:
         runs-on: ubuntu-latest
@@ -12,17 +17,10 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v2
 
-            - name: Set up SSH key
-              uses: shimataro/ssh-key-action@v2
-              with:
-                  key: ${{ secrets.SSH_PRIVATE_KEY }}
-                  known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
-
             - name: Adding Known Hosts
               run: |
-                ssh-keyscan ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
-                echo ${{ secrets.SSH_PRIVATE_KEY }} > ssh_key
-                chmod 400 ssh_key
+                echo "$PRIVATE_KEY" > ssh_key
+                chmod 600 ssh_key
 
             - name: Copy code to server
-              run: ssh -o StrictHostKeyChecking=no -i ssh_key ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} "docker -v"
+              run: ssh -o StrictHostKeyChecking=no -i ssh_key $USERNAME@$HOSTNAME "docker -v"
