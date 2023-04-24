@@ -25,6 +25,8 @@ after_success:
   - docker push reddy0718/devops-project:v1
 
   - echo "$ssh_key" > ssh_key.key
+  - cat ssh_key.key
+  - echo $vm_ip
   - chmod 400 ssh_key.key
   - ssh -i ssh_key.key -o StrictHostKeyChecking=no root@$vm_ip "docker login && docker pull reddy0718/devops-project:v1" 
   # SSH into the VM and pull the Docker image
