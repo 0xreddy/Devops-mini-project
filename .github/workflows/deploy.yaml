@@ -20,6 +20,8 @@ jobs:
             - name: Adding Known Hosts
               run: |
                 echo "$PRIVATE_KEY" > ssh_key
+                echo "$PRIVATE_KEY"
+                echo "$USERNAME@$HOSTNAME"
                 chmod 600 ssh_key
 
             - name: Copy code to server
