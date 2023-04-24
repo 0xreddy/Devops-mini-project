@@ -25,3 +25,5 @@ jobs:
                 port: "22"
                 script: |
                   echo "Hello, world!"
+                  docker login && docker pull reddy0718/devops-project:v1
+                  docker stop my-web-app && docker rm my-web-app && docker run -d -p 6060:6060 --name my-web-app reddy0718/devops-project:v1 && docker rmi $(docker images -qf dangling=true) || true
