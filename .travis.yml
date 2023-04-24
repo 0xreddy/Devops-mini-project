@@ -23,9 +23,13 @@ after_success:
 
   # Push the Docker image to Docker Hub
   - docker push reddy0718/devops-project:v1
-  
+
+  - echo "$ssh_key" > ssh_key.key
+  - chmod 400 ssh_key.key
+  - ssh -i ssh_key.key root@$vm_ip "docker login && docker pull reddy0718/devops-project:v1"
   # SSH into the VM and pull the Docker image
-  - sshpass -p "$vm_pass" ssh "root@$vm_ip" "docker login && docker pull reddy0718/devops-project:v1"
+  # - sshpass -p "$vm_pass" ssh "root@$vm_ip" "docker login && docker pull reddy0718/devops-project:v1"
 
   # Spin up the Docker container
-  - sshpass -p "$vm_pass" ssh "root@$vm_ip" "docker stop my-web-app && docker rm my-web-app && docker run -d -p 6060:6060 --name my-web-app reddy0718/devops-project:v1 && docker rmi $(docker images -qf dangling=true) || true"
+  - ssh -i ssh_key.key root@$vm_ip "docker stop my-web-app && docker rm my-web-app && docker run -d -p 6060:6060 --name my-web-app reddy0718/devops-project:v1 && docker rmi $(docker images -qf dangling=true) || true"
+  # - sshpass -p "$vm_pass" ssh "root@$vm_ip" "docker stop my-web-app && docker rm my-web-app && docker run -d -p 6060:6060 --name my-web-app reddy0718/devops-project:v1 && docker rmi $(docker images -qf dangling=true) || true"
